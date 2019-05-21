@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DIO TABLES</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script type="text/javascript" src="dio-tables.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    ReactDOM.render(
+      <h1>Hello, world!</h1>,
+      document.getElementById('root')
+    );
+  </script>
+
+    <style>
+        #container,
+        #container2,
+        #container3,
+        #container4,
+        #container5,
+        #container6
+        {
+            overflow: scroll;
+            border: 1px solid #ccc;
+            margin-left: auto;
+            margin-right: auto;
+            display: inline-flex;
+            flex-direction: row;
+            justify-content: center;
+            justify-items: center;
+            align-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        #container6 {
+            min-height: 300px;
+        }
+        .konvajs-content {
+            margin-left: auto;
+            margin-right: auto;
+            /*-ms-transform: scale(0.5, 0.5); !* IE 9 *!*/
+            /*-webkit-transform: scale(0.5, 0.5); !* Safari *!*/
+            /*transform: scale(0.5, 0.5);*/
+        }
+    </style>
+    <h2>ROW TABLE (PERIOD 10s)</h2>
+    <div id="container6"></div>
+
+    <h2>SQUARE TABLE (PERIOD 10s)</h2>
+    <div id="container5"></div>
+
+    <h2>RECTANGLE TABLE (PERIOD 10s)</h2>
+    <div id="container4"></div>
+
+    <h2>HALF-ROUND TABLE (PERIOD 5s)</h2>
+    <div id="container3"></div>
+
+
+    <h2>STATIC CIRCLE TABLE</h2>
+    <div id="container2"></div>
+
+    <h2>CIRCLE TABLE (PERIOD 10s)</h2>
+    <div id="container"></div>
+
+    <script>
+      // Setup API data
+      var seatsData = [
+        {
+          "number": 1,
+          "guest_id": "81d5bac4-e78c-4c00-ad14-7006fc7eaaea",
+          "guest": {
+            "id": "81d5bac4-e78c-4c00-ad14-7006fc7eaaea",
+            "name": "Aaliyah Jerde",
+            "checked_in": true,
+            "photo_exists": true,
+            "photo_url": "https://s3.amazonaws.com/dio-staging/ugc/people/photos/7f5/65c/e7-/square/BN-BY925_mag041_OZ_20140318165119.jpg?1557740769",
+            "status": 1
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object:243"
+        },
+        {
+          "number": 2,
+          "guest_id": "4b31396d-4413-47e7-b808-4f9e6e53ef66",
+          "guest": {
+            "id": "4b31396d-4413-47e7-b808-4f9e6e53ef66",
+            "name": "Alex M",
+            "photo_exists": true,
+            "photo_url": "https://s3.amazonaws.com/dio-staging/ugc/people/photos/7f5/65c/e7-/square/BN-BY925_mag041_OZ_20140318165119.jpg?1557740769",
+            "checked_in": false,
+            "status": 1
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 244"
+        },
+        {
+          "number": 3,
+          "guest_id": "be9942b1-bf48-47e0-b74e-523cc3251096",
+          "guest": {
+            "id": "be9942b1-bf48-47e0-b74e-523cc3251096",
+            "name": "Dmitri Meshin",
+            "photo_exists": true,
+            "photo_url": "https://s3.amazonaws.com/dio-staging/ugc/people/photos/7f5/65c/e7-/square/BN-BY925_mag041_OZ_20140318165119.jpg?1557740769",
+            "checked_in": false,
+            "status": 1
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 245"
+        },
+        {
+          "number": 4,
+          "guest_id": null,
+          "guest": null,
+          "reserved": true,
+          "description": "This is very long placeholder to test it. Waiting for John and Marry to appear!",
+          "$$hashKey": "object: 246"
+        },
+        {
+          "number": 5,
+          "guest_id": null,
+          "guest": null,
+          "reserved": true,
+          "description": "This is very long placeholder to test it. Waiting for John and Marry to appear!",
+          "$$hashKey": "object: 247"
+        },
+        {
+          "number": 6,
+          "guest_id": null,
+          "guest": null,
+          "reserved": true,
+          "description": "In case when Jown shows Up!",
+          "$$hashKey": "object:248"
+        },
+        {
+          "number": 7,
+          "guest_id": null,
+          "guest": {
+            "id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+            "name": "Arnold S.",
+            "photo_exists": true,
+            "photo_url": "https://s3.amazonaws.com/dio-staging/ugc/people/photos/7f5/65c/e7-/square/BN-BY925_mag041_OZ_20140318165119.jpg?1557740769",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 249"
+        },
+        {
+          "number": 8,
+          "guest_id": null,
+          "guest": {
+            "id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+            "name": "Allen N",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 250"
+        },
+        {
+          "number": 9,
+          "guest_id": null,
+          "guest": null,
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 251"
+        },
+        {
+          "number": 10,
+          "guest_id": null,
+          "guest": null,
+          "reserved": true,
+          "description": "placeholder",
+          "$$hashKey": "object: 252"
+        },
+        {
+          "number": 11,
+          "guest_id": "7694f17e-ddf7-48ee-acf4-5bd2a444ec06",
+          "guest": {
+            "id": "7694f17e-ddf7-48ee-acf4-5bd2a444ec06",
+            "name": "Dmitri Mesin",
+            "photo_url": "https://data.diobox.com/app/web/assets/person/profile-female.jpg",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 253"
+        },
+        {
+          "number": 12,
+          "guest_id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+          "guest": {
+            "id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+            "name": "Dmitri M",
+            "photo_exists": true,
+            "photo_url": "https://s3.amazonaws.com/dio-staging/ugc/people/photos/7f5/65c/e7-/square/BN-BY925_mag041_OZ_20140318165119.jpg?1557740769",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 254"
+        },
+        {
+          "number": 13,
+          "guest_id": "81d5bac4-e78c-4c00-ad14-7006fc7eaaea",
+          "guest": {
+            "id": "81d5bac4-e78c-4c00-ad14-7006fc7eaaea",
+            "name": "Aaliyah Jerde",
+            "checked_in": true,
+            "photo_exists": true,
+            "photo_url": "https://s3.amazonaws.com/dio-staging/ugc/people/photos/7f5/65c/e7-/square/BN-BY925_mag041_OZ_20140318165119.jpg?1557740769",
+            "status": 1
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object:243"
+        },
+        {
+          "number": 14,
+          "guest_id": "4b31396d-4413-47e7-b808-4f9e6e53ef66",
+          "guest": {
+            "id": "4b31396d-4413-47e7-b808-4f9e6e53ef66",
+            "name": "Alex M",
+            "checked_in": false,
+            "status": 1
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 244"
+        },
+        {
+          "number": 15,
+          "guest_id": "be9942b1-bf48-47e0-b74e-523cc3251096",
+          "guest": {
+            "id": "be9942b1-bf48-47e0-b74e-523cc3251096",
+            "name": "Dmitri Meshin",
+            "checked_in": false,
+            "status": 1
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 245"
+        },
+        {
+          "number": 16,
+          "guest_id": null,
+          "guest": null,
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 246"
+        },
+        {
+          "number": 17,
+          "guest_id": null,
+          "guest": null,
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 247"
+        },
+        {
+          "number": 18,
+          "guest_id": null,
+          "guest": null,
+          "reserved": true,
+          "description": "In case when Jown shows Up!",
+          "$$hashKey": "object:248"
+        },
+        {
+          "number": 19,
+          "guest_id": null,
+          "guest": {
+            "id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+            "name": "Arnold S.",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 249"
+        },
+        {
+          "number": 20,
+          "guest_id": null,
+          "guest": {
+            "id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+            "name": "Allen N",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 250"
+        },
+        {
+          "number": 21,
+          "guest_id": null,
+          "guest": null,
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 251"
+        },
+        {
+          "number": 22,
+          "guest_id": null,
+          "guest": null,
+          "reserved": true,
+          "description": "placeholder",
+          "$$hashKey": "object: 252"
+        },
+        {
+          "number": 23,
+          "guest_id": "7694f17e-ddf7-48ee-acf4-5bd2a444ec06",
+          "guest": {
+            "id": "7694f17e-ddf7-48ee-acf4-5bd2a444ec06",
+            "name": "Dmitri Mesin",
+            "photo_url": "https://data.diobox.com/app/web/assets/person/profile-female.jpg",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 253"
+        },
+        {
+          "number": 24,
+          "guest_id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+          "guest": {
+            "id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+            "name": "Dmitri M",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 254"
+        },
+        {
+          "number": 25,
+          "guest_id": "81d5bac4-e78c-4c00-ad14-7006fc7eaaea",
+          "guest": {
+            "id": "81d5bac4-e78c-4c00-ad14-7006fc7eaaea",
+            "name": "Aaliyah Jerde",
+            "checked_in": true,
+            "photo_exists": true,
+            "photo_url": "https://s3.amazonaws.com/dio-staging/ugc/people/photos/7f5/65c/e7-/square/BN-BY925_mag041_OZ_20140318165119.jpg?1557740769",
+            "status": 1
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object:243"
+        },
+        {
+          "number": 26,
+          "guest_id": "4b31396d-4413-47e7-b808-4f9e6e53ef66",
+          "guest": {
+            "id": "4b31396d-4413-47e7-b808-4f9e6e53ef66",
+            "name": "Alex M",
+            "checked_in": false,
+            "status": 1
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 244"
+        },
+        {
+          "number": 27,
+          "guest_id": "be9942b1-bf48-47e0-b74e-523cc3251096",
+          "guest": {
+            "id": "be9942b1-bf48-47e0-b74e-523cc3251096",
+            "name": "Dmitri Meshin",
+            "checked_in": false,
+            "status": 1
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 245"
+        },
+        {
+          "number": 28,
+          "guest_id": null,
+          "guest": null,
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 246"
+        },
+        {
+          "number": 29,
+          "guest_id": null,
+          "guest": null,
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 247"
+        },
+        {
+          "number": 30,
+          "guest_id": null,
+          "guest": null,
+          "reserved": true,
+          "description": "In case when Jown shows Up!",
+          "$$hashKey": "object:248"
+        },
+        {
+          "number": 31,
+          "guest_id": null,
+          "guest": {
+            "id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+            "name": "Allen N",
+            "photo_exists": true,
+            "photo_url": "https://s3.amazonaws.com/dio-staging/ugc/people/photos/7f5/65c/e7-/square/BN-BY925_mag041_OZ_20140318165119.jpg?1557740769",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 250"
+        },
+        {
+          "number": 32,
+          "guest_id": null,
+          "guest": null,
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 251"
+        },
+        {
+          "number": 33,
+          "guest_id": null,
+          "guest": null,
+          "reserved": true,
+          "description": "placeholder",
+          "$$hashKey": "object: 252"
+        },
+        {
+          "number": 34,
+          "guest_id": "7694f17e-ddf7-48ee-acf4-5bd2a444ec06",
+          "guest": {
+            "id": "7694f17e-ddf7-48ee-acf4-5bd2a444ec06",
+            "name": "Dmitri Mesin",
+            "photo_url": "https://data.diobox.com/app/web/assets/person/profile-female.jpg",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 253"
+        },
+        {
+          "number": 35,
+          "guest_id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+          "guest": {
+            "id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+            "name": "Dmitri M",
+            "photo_exists": true,
+            "photo_url": "https://s3.amazonaws.com/dio-staging/ugc/people/photos/7f5/65c/e7-/square/BN-BY925_mag041_OZ_20140318165119.jpg?1557740769",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 254"
+        },
+        {
+          "number": 36,
+          "guest_id": "81d5bac4-e78c-4c00-ad14-7006fc7eaaea",
+          "guest": {
+            "id": "81d5bac4-e78c-4c00-ad14-7006fc7eaaea",
+            "name": "Aaliyah Jerde",
+            "checked_in": true,
+            "photo_exists": true,
+            "photo_url": "https://s3.amazonaws.com/dio-staging/ugc/people/photos/7f5/65c/e7-/square/BN-BY925_mag041_OZ_20140318165119.jpg?1557740769",
+            "status": 1
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object:243"
+        },
+        {
+          "number": 37,
+          "guest_id": "4b31396d-4413-47e7-b808-4f9e6e53ef66",
+          "guest": {
+            "id": "4b31396d-4413-47e7-b808-4f9e6e53ef66",
+            "name": "Alex M",
+            "checked_in": false,
+            "status": 1
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 244"
+        },
+        {
+          "number": 38,
+          "guest_id": "be9942b1-bf48-47e0-b74e-523cc3251096",
+          "guest": {
+            "id": "be9942b1-bf48-47e0-b74e-523cc3251096",
+            "name": "Dmitri Meshin",
+            "checked_in": false,
+            "status": 1
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 245"
+        },
+        {
+          "number": 39,
+          "guest_id": null,
+          "guest": null,
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 246"
+        },
+        {
+          "number": 40,
+          "guest_id": null,
+          "guest": null,
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 247"
+        },
+        {
+          "number": 41,
+          "guest_id": null,
+          "guest": null,
+          "reserved": true,
+          "description": "In case when Jown shows Up!",
+          "$$hashKey": "object:248"
+        },
+        {
+          "number": 42,
+          "guest_id": null,
+          "guest": {
+            "id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+            "name": "Arnold S.",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 249"
+        },
+        {
+          "number": 43,
+          "guest_id": null,
+          "guest": {
+            "id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+            "name": "Allen N",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 250"
+        },
+        {
+          "number": 44,
+          "guest_id": null,
+          "guest": null,
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 251"
+        },
+        {
+          "number": 45,
+          "guest_id": null,
+          "guest": null,
+          "reserved": true,
+          "description": "Dont seat here",
+          "$$hashKey": "object: 252"
+        },
+        {
+          "number": 46,
+          "guest_id": "7694f17e-ddf7-48ee-acf4-5bd2a444ec06",
+          "guest": {
+            "id": "7694f17e-ddf7-48ee-acf4-5bd2a444ec06",
+            "name": "Mister and Missis Smith",
+            "photo_url": "https://data.diobox.com/app/web/assets/person/profile-female.jpg",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 253"
+        },
+        {
+          "number": 47,
+          "guest_id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+          "guest": {
+            "id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+            "name": "Dmitri M",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 254"
+        },
+        {
+          "number": 48,
+          "guest_id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+          "guest": {
+            "id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+            "name": "Mister Smith",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 254"
+        },
+        {
+          "number": 49,
+          "guest_id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+          "guest": {
+            "id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+            "name": "Miss Smith",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 254"
+        },
+        {
+          "number": 50,
+          "guest_id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+          "guest": {
+            "id": "b0807a8e-cd50-435d-8811-6376baeb6f64",
+            "name": "Darth Vaider",
+            "checked_in": false,
+            "status": 0
+          },
+          "reserved": false,
+          "description": null,
+          "$$hashKey": "object: 254"
+        }
+      ];
+      // Setup seats numbers
+
+      var table = window.DioTables.TableFactory.createTable('circle', 'container');
+      table.seatsData = seatsData;
+      table.topSeatsNumber = parseInt(Math.random() * 25);
+      table.rightSeatsNumber = 0;
+      table.bottomSeatsNumber = 0;
+      table.leftSeatsNumber = 0;
+      table.editMode = true;
+      table.render();
+
+      var seatsNumber = table.topSeatsNumber;
+      window.interval = setInterval(function () {
+        table.topSeatsNumber = seatsNumber;
+        table.render();
+        seatsNumber -= 1;
+        if (seatsNumber < 1) {
+          seatsNumber = 25;
+        }
+      }, 10000);
+
+      var table2 = DioTables.TableFactory.createTable('circle', 'container2');
+      table2.seatsData = seatsData;
+      table2.topSeatsNumber = 25;
+      table2.rightSeatsNumber = 0;
+      table2.bottomSeatsNumber = 0;
+      table2.leftSeatsNumber = 0;
+      table2.editMode = true;
+      table2.onMenuItemClick = function (seat, menuItem) {
+        console.error('seat #: ', seat.data.number);
+        console.error('menuItem: ', menuItem);
+      };
+      table2.render();
+
+      document.body.addEventListener("click", function(event) {
+        var targetName = event.target.tagName.toLowerCase();
+        if (targetName !== 'canvas') {
+          table2.hideMenus();
+        }
+      });
+
+      //
+      var halfRoundTable = DioTables.TableFactory.createTable('half-round', 'container3');
+      halfRoundTable.seatsData = Object.assign({}, seatsData);
+      halfRoundTable.topSeatsNumber = 10;
+      halfRoundTable.bottomSeatsNumber = 10;
+      halfRoundTable.rightSeatsNumber = 0;
+      halfRoundTable.leftSeatsNumber = 0;
+      halfRoundTable.editMode = true;
+      halfRoundTable.render();
+
+      setInterval(function () {
+        halfRoundTable.topSeatsNumber = Math.floor(Math.random() * 9) + 1;
+        halfRoundTable.bottomSeatsNumber = Math.floor(Math.random() * 10);
+        halfRoundTable.render();
+      }, 5000);
+
+      var rectangleTable = window.DioTables.TableFactory.createTable('rectangle', 'container4');
+      rectangleTable.seatsData = Object.assign({}, seatsData);
+      rectangleTable.topSeatsNumber = 5;
+      rectangleTable.bottomSeatsNumber = 4;
+      rectangleTable.rightSeatsNumber = 5;
+      rectangleTable.leftSeatsNumber = 3;
+      rectangleTable.editMode = true;
+      rectangleTable.render();
+
+      setInterval(function () {
+        rectangleTable.topSeatsNumber = Math.floor(Math.random() * 9) + 1;
+        rectangleTable.rightSeatsNumber = Math.floor(Math.random() * 10);
+        rectangleTable.bottomSeatsNumber = Math.floor(Math.random() * 10);
+        rectangleTable.leftSeatsNumber = Math.floor(Math.random() * 10);
+        rectangleTable.render();
+      }, 8000);
+
+      var squareTable = DioTables.TableFactory.createTable('square', 'container5');
+      squareTable.seatsData = Object.assign({}, seatsData);
+      squareTable.topSeatsNumber = 1;
+      squareTable.bottomSeatsNumber = 1;
+      squareTable.rightSeatsNumber = 1;
+      squareTable.leftSeatsNumber = 1;
+      squareTable.editMode = true;
+      squareTable.render();
+
+      setInterval(function () {
+        squareTable.topSeatsNumber = Math.floor(Math.random() * 9) + 1;
+        squareTable.rightSeatsNumber = Math.floor(Math.random() * 10);
+        squareTable.bottomSeatsNumber = Math.floor(Math.random() * 10);
+        squareTable.leftSeatsNumber = Math.floor(Math.random() * 10);
+        squareTable.render();
+      }, 9000);
+
+      var rowTable = DioTables.TableFactory.createTable('row', 'container6');
+      rowTable.seatsData = Object.assign({}, seatsData);
+      rowTable.topSeatsNumber = 5;
+      rowTable.bottomSeatsNumber = 0;
+      rowTable.rightSeatsNumber = 0;
+      rowTable.leftSeatsNumber = 0;
+      rowTable.onMenuItemClick = function (seat, menuItem) {
+        console.error('seat #: ', seat.data.number);
+        console.error('menuItem: ', menuItem);
+      };
+      rowTable.editMode = true;
+      rowTable.render();
+      //
+      setInterval(function () {
+        rowTable.topSeatsNumber = Math.floor(Math.random() * 29) + 1;
+        // rowTable.rightSeatsNumber = Math.floor(Math.random() * 10);
+        // rowTable.bottomSeatsNumber = Math.floor(Math.random() * 10);
+        // rowTable.leftSeatsNumber = Math.floor(Math.random() * 10);
+        rowTable.render();
+      }, 13000);
+
+    </script>
+
+</body>
+</html>
